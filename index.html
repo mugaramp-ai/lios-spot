@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIOS Dashboard</title>
+    <title>Lio Spot Dashboard</title>
     <style>
         body { 
             background-color: #1a1a1a; 
             color: #ffd700; 
             font-family: 'Segoe UI', Arial, sans-serif; 
             text-align: center; 
+            margin: 0;
             padding: 20px;
         }
         h2 { font-size: 24px; border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 30px; }
@@ -17,25 +18,25 @@
         
         .btn { 
             width: 90%; 
-            max-width: 350px; 
+            max-width: 380px; 
             padding: 18px; 
             border-radius: 15px; 
             border: none; 
             font-weight: bold; 
-            font-size: 17px; 
+            font-size: 18px; 
             color: white; 
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(0,0,0,0.4);
             transition: 0.2s;
         }
 
-        /* आपके मांगे हुए डिजाइन के कलर्स */
+        /* सटीक कलर कोडिंग */
         .green { background: linear-gradient(145deg, #4caf50, #2e7d32); }
         .blue { background: linear-gradient(145deg, #2196f3, #1565c0); }
         .purple { background: linear-gradient(145deg, #9c27b0, #6a1b9a); }
         .red { background: linear-gradient(145deg, #f44336, #c62828); }
 
-        .btn:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .btn:active { transform: scale(0.96); opacity: 0.9; }
     </style>
 </head>
 <body>
@@ -54,7 +55,7 @@
         <button class="btn purple" onclick="st('Purple Room', 120)">Purple Room (2 hr)</button>
     </div>
 
-    <h2>👾 Bosses (6hr)</h2>
+    <h2>👾 Bosses (6 hr)</h2>
     <div class="grid">
         <button class="btn red" onclick="st('Eg Boss', 360)">Eg Boss (6 hr)</button>
         <button class="btn red" onclick="st('Avenger', 360)">Avenger (6 hr)</button>
@@ -63,12 +64,22 @@
 
     <script>
     function st(n, m) {
-        let d = new Date(new Date().getTime() + m*60000);
+        let d = new Date(new Date().getTime() + m * 60000);
+        // समय को 12-घंटे के फॉर्मेट (AM/PM) में सेट करना
         let t = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
-        let msg = `🚀 *LIOS ALERT* 🚀\n🎯 *Target:* ${n}\n✅ *Next Spawn:* ${t}\n\nपुराने फोन से अपडेट!`;
         
-        // यह आपके WhatsApp पर मैसेज भेजने के लिए तैयार कर देगा
-        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        let msg = `🚀 *LIOS ALERT* 🚀\n🎯 *Target:* ${n}\n✅ *Next Spawn:* ${t}\n\nपुराने फोन से अपडेट!`;
+
+        // यह आपके पुराने फोन के Termux (localhost) को सिग्नल भेजेगा
+        fetch(`http://localhost:8080/?msg=${encodeURIComponent(msg)}`)
+        .then(() => {
+            console.log("मैसेज ग्रुप में भेज दिया गया है!");
+        })
+        .catch(err => {
+            // अगर Termux चालू नहीं है, तो सामान्य व्हाट्सएप लिंक खोलें
+            console.log("Termux बंद है, सामान्य व्हाट्सएप का उपयोग कर रहे हैं...");
+            window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+        });
     }
     </script>
 </body>
