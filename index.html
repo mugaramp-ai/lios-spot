@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lio Spot Pro</title>
+    <style>
+        body { background-color: #0f0f0f; color: white; font-family: sans-serif; text-align: center; padding: 15px; }
+        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        h2 { color: #ffd700; border-bottom: 2px solid #333; padding-bottom: 5px; margin-top: 20px; font-size: 20px; }
+        .btn { padding: 18px; border-radius: 12px; border: none; font-weight: bold; font-size: 15px; cursor: pointer; color: white; transition: 0.2s; }
+        .room-btn { background: linear-gradient(145deg, #2ecc71, #27ae60); }
+        .boss-btn { background: linear-gradient(145deg, #e74c3c, #c0392b); grid-column: span 1; }
+        .btn:active { transform: scale(0.95); opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+    <h2>🏠 Rooms & Cards</h2>
+    <div class="container">
+        <button class="btn room-btn" onclick="sendLioAlert('Green Room', 45)">Green (45m)</button>
+        <button class="btn room-btn" onclick="sendLioAlert('Blue Room', 60)">Blue (1h)</button>
+        <button class="btn room-btn" onclick="sendLioAlert('Purple Room', 120)">Purple (2h)</button>
+        <button class="btn room-btn" onclick="sendLioAlert('Green Card', 10)">Green Card (10m)</button>
+    </div>
+
+    <h2>👾 Bosses (6 Hour Timer)</h2>
+    <div class="container">
+        <button class="btn boss-btn" onclick="sendLioAlert('Eg Boss', 360)">Eg (6h)</button>
+        <button class="btn boss-btn" onclick="sendLioAlert('Avenger', 360)">Avenger (6h)</button>
+        <button class="btn boss-btn" onclick="sendLioAlert('Tank', 360)">Tank (6h)</button>
+        <button class="btn boss-btn" onclick="sendLioAlert('Scientific', 360)">Scientific (6h)</button>
+    </div>
+
+    <script>
+    function sendLioAlert(name, minutes) {
+        let now = new Date();
+        let respawnTime = new Date(now.getTime() + minutes * 60000);
+        
+        let startStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        let readyStr = respawnTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        let message = `🚀 *LIOS UPDATE* 🚀\n` +
+                      `━━━━━━━━━━━━━━━━━━\n` +
+                      `🎯 *Target:* ${name}\n` +
+                      `⏱️ *Time Done:* ${startStr}\n` +
+                      `✅ *Next Spawn:* ${readyStr}\n` +
+                      `━━━━━━━━━━━━━━━━━━\n` +
+                      `पुराने फोन से ऑटो-अपडेट!`;
+
+        // व्हाट्सएप पर मैसेज भेजने के लिए
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+    </script>
+</body>
+</html>
