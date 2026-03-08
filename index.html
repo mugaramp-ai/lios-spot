@@ -3,53 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lio Spot Pro</title>
+    <title>LIOS Dashboard</title>
     <style>
-        body { background-color: #0f0f0f; color: white; font-family: sans-serif; text-align: center; padding: 15px; }
-        .container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        h2 { color: #ffd700; border-bottom: 2px solid #333; padding-bottom: 5px; margin-top: 20px; font-size: 20px; }
-        .btn { padding: 18px; border-radius: 12px; border: none; font-weight: bold; font-size: 15px; cursor: pointer; color: white; transition: 0.2s; }
-        .room-btn { background: linear-gradient(145deg, #2ecc71, #27ae60); }
-        .boss-btn { background: linear-gradient(145deg, #e74c3c, #c0392b); grid-column: span 1; }
-        .btn:active { transform: scale(0.95); opacity: 0.8; }
+        body { 
+            background-color: #1a1a1a; 
+            color: #ffd700; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            text-align: center; 
+            padding: 20px;
+        }
+        h2 { font-size: 24px; border-bottom: 2px solid #333; padding-bottom: 10px; margin-top: 30px; }
+        .grid { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        
+        .btn { 
+            width: 90%; 
+            max-width: 350px; 
+            padding: 18px; 
+            border-radius: 15px; 
+            border: none; 
+            font-weight: bold; 
+            font-size: 17px; 
+            color: white; 
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transition: 0.2s;
+        }
+
+        /* आपके मांगे हुए डिजाइन के कलर्स */
+        .green { background: linear-gradient(145deg, #4caf50, #2e7d32); }
+        .blue { background: linear-gradient(145deg, #2196f3, #1565c0); }
+        .purple { background: linear-gradient(145deg, #9c27b0, #6a1b9a); }
+        .red { background: linear-gradient(145deg, #f44336, #c62828); }
+
+        .btn:active { transform: scale(0.96); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
     </style>
 </head>
 <body>
 
-    <h2>🏠 Rooms & Cards</h2>
-    <div class="container">
-        <button class="btn room-btn" onclick="sendLioAlert('Green Room', 45)">Green (45m)</button>
-        <button class="btn room-btn" onclick="sendLioAlert('Blue Room', 60)">Blue (1h)</button>
-        <button class="btn room-btn" onclick="sendLioAlert('Purple Room', 120)">Purple (2h)</button>
-        <button class="btn room-btn" onclick="sendLioAlert('Green Card', 10)">Green Card (10m)</button>
+    <h2>🃏 Cards Timer</h2>
+    <div class="grid">
+        <button class="btn green" onclick="st('Green Card', 10)">Green Card (10 min)</button>
+        <button class="btn blue" onclick="st('Blue Card', 120)">Blue Card (2 hr)</button>
+        <button class="btn purple" onclick="st('Purple Card', 180)">Purple Card (3 hr)</button>
     </div>
 
-    <h2>👾 Bosses (6 Hour Timer)</h2>
-    <div class="container">
-        <button class="btn boss-btn" onclick="sendLioAlert('Eg Boss', 360)">Eg (6h)</button>
-        <button class="btn boss-btn" onclick="sendLioAlert('Avenger', 360)">Avenger (6h)</button>
-        <button class="btn boss-btn" onclick="sendLioAlert('Tank', 360)">Tank (6h)</button>
-        <button class="btn boss-btn" onclick="sendLioAlert('Scientific', 360)">Scientific (6h)</button>
+    <h2>🏠 Rooms Timer</h2>
+    <div class="grid">
+        <button class="btn green" onclick="st('Green Room', 45)">Green Room (45 min)</button>
+        <button class="btn blue" onclick="st('Blue Room', 60)">Blue Room (1 hr)</button>
+        <button class="btn purple" onclick="st('Purple Room', 120)">Purple Room (2 hr)</button>
+    </div>
+
+    <h2>👾 Bosses (6hr)</h2>
+    <div class="grid">
+        <button class="btn red" onclick="st('Eg Boss', 360)">Eg Boss (6 hr)</button>
+        <button class="btn red" onclick="st('Avenger', 360)">Avenger (6 hr)</button>
+        <button class="btn red" onclick="st('Tank', 360)">Tank (6 hr)</button>
     </div>
 
     <script>
-    function sendLioAlert(name, minutes) {
-        let now = new Date();
-        let respawnTime = new Date(now.getTime() + minutes * 60000);
+    function st(n, m) {
+        let d = new Date(new Date().getTime() + m*60000);
+        let t = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
+        let msg = `🚀 *LIOS ALERT* 🚀\n🎯 *Target:* ${n}\n✅ *Next Spawn:* ${t}\n\nपुराने फोन से अपडेट!`;
         
-        let startStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        let readyStr = respawnTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-        let message = `🚀 *LIOS UPDATE* 🚀\n` +
-                      `━━━━━━━━━━━━━━━━━━\n` +
-                      `🎯 *Target:* ${name}\n` +
-                      `⏱️ *Time Done:* ${startStr}\n` +
-                      `✅ *Next Spawn:* ${readyStr}\n` +
-                      `━━━━━━━━━━━━━━━━━━\n` +
-                      `पुराने फोन से ऑटो-अपडेट!`;
-
-        // व्हाट्सएप पर मैसेज भेजने के लिए
-        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        // यह आपके WhatsApp पर मैसेज भेजने के लिए तैयार कर देगा
+        window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
     }
     </script>
 </body>
