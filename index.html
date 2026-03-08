@@ -30,7 +30,7 @@
             transition: 0.2s;
         }
 
-        /* सटीक कलर कोडिंग */
+        /* बटन के रंग */
         .green { background: linear-gradient(145deg, #4caf50, #2e7d32); }
         .blue { background: linear-gradient(145deg, #2196f3, #1565c0); }
         .purple { background: linear-gradient(145deg, #9c27b0, #6a1b9a); }
@@ -65,19 +65,19 @@
     <script>
     function st(n, m) {
         let d = new Date(new Date().getTime() + m * 60000);
-        // समय को 12-घंटे के फॉर्मेट (AM/PM) में सेट करना
         let t = d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', hour12: true});
         
         let msg = `🚀 *LIOS ALERT* 🚀\n🎯 *Target:* ${n}\n✅ *Next Spawn:* ${t}\n\nपुराने फोन से अपडेट!`;
 
-        // यह आपके पुराने फोन के Termux (localhost) को सिग्नल भेजेगा
-        fetch(`http://localhost:8080/?msg=${encodeURIComponent(msg)}`)
+        // आपके पुराने फोन का सही IP यहाँ डाल दिया गया है
+        let termux_url = `http://10.81.197.149:8080/?msg=${encodeURIComponent(msg)}`;
+
+        fetch(termux_url)
         .then(() => {
-            console.log("मैसेज ग्रुप में भेज दिया गया है!");
+            console.log("मैसेज ऑटोमैटिक भेज दिया गया!");
         })
         .catch(err => {
-            // अगर Termux चालू नहीं है, तो सामान्य व्हाट्सएप लिंक खोलें
-            console.log("Termux बंद है, सामान्य व्हाट्सएप का उपयोग कर रहे हैं...");
+            // अगर Termux बंद है, तो यह व्हाट्सएप ऐप खोल देगा
             window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
         });
     }
